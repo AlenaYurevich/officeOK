@@ -33,8 +33,7 @@ class BrandAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
     list_display = ('name', 'category', 'sections_list', 'brand', 'price', 'available', 'created', 'updated')
-    list_filter = ['category', 'available', 'created', 'updated']
-    filter_horizontal = ('sections',)  # Добавит удобный интерфейс выбора
+    list_filter = ['sections', 'category', 'available', 'created', 'updated']
     list_editable = ['price', 'available']
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name', 'article')
