@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
-# models.py
 class Section(models.Model):
     name = models.CharField("Название раздела", max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
@@ -27,6 +27,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('product_list_by_category', args=[self.slug])
 
 
 class Brand(models.Model):
@@ -72,6 +75,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('product_detail',
+                       args=[self.pk, self.slug])
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(
@@ -79,7 +86,7 @@ class ProductImage(models.Model):
         on_delete=models.CASCADE,
         related_name='images'  # Доступ через product.images.all()
     )
-    image = models.ImageField(upload_to='product_images/%Y/%m/%d')
+    image = models.ImageField(upload_to='static/product_images/%Y/%m/%d')
     description = models.CharField(max_length=200, blank=True)  # Опциональное описание
 
     def __str__(self):
